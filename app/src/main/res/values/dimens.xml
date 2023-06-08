@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="shopNameMargin">115dp</dimen>
+    <dimen name="buttonWidth">366dp</dimen>
+    <dimen name="buttonHeight">55dp</dimen>
+    <dimen name="editTextHeight">60dp</dimen>
+</resources>

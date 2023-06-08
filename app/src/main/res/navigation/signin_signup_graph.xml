@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signin_signup_graph"
+    app:startDestination="@id/signUpFragment">
+
+    <fragment
+        android:id="@+id/introductionFragments"
+        android:name="com.example.clothify.Fragments.SignIn.IntroductionFragments"
+        android:label="IntroductionFragments"
+        tools:layout="@layout/fragment_introduction">
+
+        <action
+            android:id="@+id/action_introductionFragments_to_accountOptionsFragment"
+            app:destination="@id/accountOptionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.clothify.Fragments.SignIn.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_signin">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.clothify.Fragments.SignIn.SignUpFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/fragment_signup">
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountOptionsFragment"
+        android:name="com.example.clothify.Fragments.SignIn.AccountOptionsFragment"
+        android:label="AccountOptionsFragment"
+        tools:layout="@layout/fragment_account_options">
+        <action
+            android:id="@+id/action_accountOptionsFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_accountOptionsFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+</navigation>
