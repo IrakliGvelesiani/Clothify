@@ -20,6 +20,9 @@ class SignInViewModel @Inject constructor(
     private val _signIn = MutableSharedFlow<Resource<FirebaseUser>>()
     val signIn = _signIn.asSharedFlow()
 
+    private val _resetPassword = MutableSharedFlow<Resource<String>>()
+    val resetPassword = _resetPassword.asSharedFlow()
+
     fun signIn(email: String, password: String){
         viewModelScope.launch { _signIn.emit(Resource.Loading()) }
         firebaseAuth.signInWithEmailAndPassword(
@@ -36,4 +39,23 @@ class SignInViewModel @Inject constructor(
             }
         }
     }
+
+    fun resetPassword(email: String) {
+        viewModelScope.launch {
+            _resetPassword.emit(Resource.Loading())
+        }
+
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener {
+                    viewModelScope.launch {
+                        _resetPassword.emit(Resource.Success(email))
+                    }
+                }
+                .addOnFailureListener {
+                    viewModelScope.launch {
+                        _resetPassword.emit(Resource.Error(it.message.toString()))
+                    }
+                }
+        }
+
 }

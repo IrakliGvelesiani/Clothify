@@ -11,10 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clothify.Activities.ShoppingActivity
+import com.example.clothify.Dialog.setupBottomSheetDialog
 import com.example.clothify.R
 import com.example.clothify.Util.Resource
 import com.example.clothify.Viewmodel.SignInViewModel
 import com.example.clothify.databinding.FragmentSigninBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -44,6 +46,27 @@ class SignInFragment: Fragment(R.layout.fragment_signin) {
                 val email = edEmailSignIn.text.toString().trim()
                 val password = edPassword.text.toString()
                 viewModel.signIn(email, password)
+            }
+        }
+
+        binding.forgetPassword.setOnClickListener {
+            setupBottomSheetDialog {  email ->
+                viewModel.resetPassword(email)
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.resetPassword.collect{
+                when(it){
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        Snackbar.make(requireView(), "Reset Link Was Sent To Your Email!", Snackbar.LENGTH_LONG).show()
+                    }
+                    is Resource.Error ->{
+                        Snackbar.make(requireView(), "Error: ${it.message}" ,Snackbar.LENGTH_LONG).show()
+                    }
+                    else -> Unit
+                }
             }
         }
 
