@@ -2,6 +2,7 @@ package com.example.clothify.Viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.clothify.Data.User
+import com.example.clothify.Util.Constants.USER_COLLECTION
 import com.example.clothify.Util.Resource
 import com.example.clothify.Util.SignUpFieldState
 import com.example.clothify.Util.SignUpValidation
@@ -9,6 +10,7 @@ import com.example.clothify.Util.validateEmail
 import com.example.clothify.Util.validatePassword
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -22,11 +24,12 @@ import javax.inject.Inject
 @HiltViewModel
 
 class SignUpViewModel @Inject constructor(
-   private val firebaseAuth: FirebaseAuth
+   private val firebaseAuth: FirebaseAuth,
+   private val db : FirebaseFirestore
 ): ViewModel() {
 
-    private val _sigenup = MutableStateFlow<Resource<FirebaseUser>>(Resource.Unspecified())
-    val signeup: Flow<Resource<FirebaseUser>> = _sigenup
+    private val _sigenup = MutableStateFlow<Resource<User>>(Resource.Unspecified())
+    val signeup: Flow<Resource<User>> = _sigenup
 
     private val _validation = Channel<SignUpFieldState> (  )
     val validation = _validation.receiveAsFlow()
@@ -41,7 +44,8 @@ class SignUpViewModel @Inject constructor(
         firebaseAuth.createUserWithEmailAndPassword(user.email, password)
             .addOnSuccessListener {
                 it.user?.let{
-                    _sigenup.value = Resource.Success(it)
+                    saveUserInfo(it.uid,user)
+//
                 }
             }.addOnFailureListener {
                     _sigenup.value = Resource.Error(it.message.toString())
@@ -55,6 +59,18 @@ class SignUpViewModel @Inject constructor(
                 _validation.send(signupFieldState)
             }
         }
+    }
+
+    private fun saveUserInfo(userUID: String, user:User) {
+        db.collection(USER_COLLECTION)
+            .document(userUID)
+            .set(user)
+            .addOnSuccessListener {
+                _sigenup.value = Resource.Success(user)
+            }.addOnFailureListener {
+                _sigenup.value = Resource.Error(it.message.toString())
+            }
+
     }
 
     private fun checkValidation(user: User, password: String): Boolean {
