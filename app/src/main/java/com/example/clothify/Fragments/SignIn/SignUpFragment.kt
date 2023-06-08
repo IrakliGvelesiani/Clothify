@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.clothify.Data.User
 import com.example.clothify.R
 import com.example.clothify.Util.Resource
@@ -37,6 +38,10 @@ class SignUpFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.doyouhaveanaccount.setOnClickListener{
+            findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+        }
 
         binding.apply {
             signInButton2.setOnClickListener {

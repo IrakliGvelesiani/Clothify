@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="@id/guidelineSignInLeft"
-            app:layout_constraintTop_toBottomOf="@id/signInButton2"
+            app:layout_constraintTop_toBottomOf="@id/signInButton"
             android:src="@drawable/facebook_login"
             />
 
@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             app:layout_constraintEnd_toEndOf="@id/guidelineSignInRight"
-            app:layout_constraintTop_toBottomOf="@id/signInButton2"
+            app:layout_constraintTop_toBottomOf="@id/signInButton"
             android:src="@drawable/google_login"
             />
 
@@ -126,16 +126,17 @@
             app:layout_constraintBottom_toBottomOf="@id/google"
             app:layout_constraintEnd_toEndOf="@id/google"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/signInButton2"
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/signInButton"
             style="@style/blackButtonStyle"
             android:layout_width="@dimen/buttonWidth"
             android:layout_height="@dimen/buttonHeight"
-            android:text="Get Started"
+            android:text="Sign In"
             app:layout_constraintTop_toBottomOf="@+id/forgetPassword"
             app:layout_constraintEnd_toEndOf="@id/guidelineSignInRight"
             app:layout_constraintStart_toStartOf="@id/guidelineSignInLeft"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            app:spinning_bar_color="@color/white"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineSignInLeft"

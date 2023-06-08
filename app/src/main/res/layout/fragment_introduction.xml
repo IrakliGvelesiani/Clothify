@@ -60,6 +60,7 @@
         app:layout_constraintTop_toTopOf="@id/guidelineCopyRight" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/getStartedBtn"
         style="@style/blackButtonStyle"
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="@dimen/buttonHeight"
