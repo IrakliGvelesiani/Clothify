@@ -13,7 +13,8 @@
 
         <action
             android:id="@+id/action_introductionFragments_to_accountOptionsFragment"
-            app:destination="@id/accountOptionsFragment" />
+            app:destination="@id/accountOptionsFragment"
+            app:enterAnim="@anim/from_bottom" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -23,6 +24,7 @@
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_bottom"
             app:popUpTo="@id/accountOptionsFragment" />
     </fragment>
     <fragment
@@ -33,6 +35,7 @@
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment"
+            app:enterAnim="@anim/from_bottom"
             app:popUpTo="@id/accountOptionsFragment" />
     </fragment>
     <fragment
@@ -42,9 +45,18 @@
         tools:layout="@layout/fragment_account_options">
         <action
             android:id="@+id/action_accountOptionsFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_accountOptionsFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
 </navigation>
