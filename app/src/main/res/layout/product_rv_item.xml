@@ -37,10 +37,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_light"
                 android:text="Cargos"
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="10sp"
                 android:textStyle="bold"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:maxLines="3"/>
 
             <ImageView
                 android:id="@+id/img_favorite"

@@ -41,6 +41,9 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
             JoggersFragment(),
             TrousersFragment()
         )
+
+        binding.viewPagerHome.isUserInputEnabled = false
+
         val  viewPager22Adapter =
             HomeViewpagerAdapter(categoriesFragments, childFragmentManager, lifecycle)
         binding.viewPagerHome.adapter = viewPager22Adapter
