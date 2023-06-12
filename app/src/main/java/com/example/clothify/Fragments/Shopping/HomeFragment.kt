@@ -54,6 +54,9 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
                 2 -> tab.text = "CropTops"
                 3 -> tab.text = "Hoodies"
                 4 -> tab.text = "Jeans"
+                5 -> tab.text = "Joggers"
+                6 -> tab.text = "Trousers"
+
             }
         }.attach()
     }
