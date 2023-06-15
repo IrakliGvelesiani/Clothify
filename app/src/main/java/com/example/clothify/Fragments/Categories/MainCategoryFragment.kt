@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clothify.Adapters.BestDealsAdapter
@@ -17,6 +18,7 @@ import com.example.clothify.Adapters.BestProductsAdapter
 import com.example.clothify.Adapters.SpecialProductsAdapter
 import com.example.clothify.R
 import com.example.clothify.Util.Resource
+import com.example.clothify.Util.showBottomNavigationView
 import com.example.clothify.Viewmodel.MainCategoryViewModel
 import com.example.clothify.databinding.FragmentMainCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +49,24 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
         setupSpecialProductsRv()
         setupBestDealsRv()
         setupBestProductsRv()
+
+        specialProductsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
+        }
+
+        bestDealsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
+        }
+
+        bestProductsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
+        }
+
+
+
         lifecycleScope.launchWhenStarted {
             viewModel.specialProducts.collectLatest {
                 when (it){
@@ -148,5 +168,11 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
                 adapter = specialProductsAdapter
             }
         }
+
+    override fun onResume() {
+        super.onResume()
+
+        showBottomNavigationView()
+    }
 
 }

@@ -1,5 +1,9 @@
 package com.example.clothify.Data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Product(
 
     val id: String,
@@ -11,7 +15,7 @@ data class Product(
     val colors: List<Int>? = null,
     val sizes: List<String>? = null,
     val images: List<String>
-)
+): Parcelable
 {
     constructor(): this("0","","",0f,images = emptyList())
 }

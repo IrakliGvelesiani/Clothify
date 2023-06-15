@@ -5,6 +5,10 @@
         <item name="colorPrimary">@color/g_black</item>
         <item name="colorPrimaryVariant">@color/g_navy</item>
         <item name="colorOnPrimary">@color/g_brown</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+
+
 
 
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->

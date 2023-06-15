@@ -7,4 +7,6 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class ClothifyApplication: Application() {
+
+
 }
