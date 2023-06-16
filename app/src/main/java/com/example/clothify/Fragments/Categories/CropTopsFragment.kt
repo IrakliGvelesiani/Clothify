@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.clothify.Data.Category
 import com.example.clothify.Util.Resource
 import com.example.clothify.Viewmodel.CategoryViewModel
-import com.example.clothify.Viewmodel.Factory.BaseCategoryViewModelFactory
+import com.example.clothify.Viewmodel.Factory.BaseCategoryViewModelFactoryFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ class CropTopsFragment: BaseCategoryFragment() {
     lateinit var firestore: FirebaseFirestore
 
     val viewModel by viewModels<CategoryViewModel> {
-        BaseCategoryViewModelFactory(firestore, Category.CropTops)
+        BaseCategoryViewModelFactoryFactory(firestore, Category.CropTops)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

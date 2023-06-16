@@ -1,32 +1,49 @@
 package com.example.clothify.Viewmodel
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import android.content.SharedPreferences
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.clothify.R
-import com.example.clothify.databinding.FragmentIntroductionBinding
+import com.example.clothify.Util.Constants.INTRODUCTION_KEY
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class IntroductionViewModel @Inject constructor(
+    private val sharedPreferences: SharedPreferences,
+    private val firebaseAuth: FirebaseAuth
+) : ViewModel() {
 
-class IntroductionFragment: Fragment(R.layout.fragment_introduction) {
-    private lateinit var binding: FragmentIntroductionBinding
+    private val _navigate = MutableStateFlow(0)
+    val navigate: StateFlow<Int> = _navigate
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentIntroductionBinding.inflate(inflater)
-        return binding.root
+    companion object{
+        const val SHOPPING_ACTIVITY = 23
+        const val ACCOUNT_OPTIONS_FRAGMENT = R.id.action_introductionFragments_to_accountOptionsFragment
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    init {
+        val isButtonClicked = sharedPreferences.getBoolean(INTRODUCTION_KEY,false)
+        val user = firebaseAuth.currentUser
 
-        binding.getStartedBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_introductionFragments_to_accountOptionsFragment)
+        if (user != null){
+            viewModelScope.launch {
+                _navigate.emit(SHOPPING_ACTIVITY)
+            }
+        }else if (isButtonClicked){
+            viewModelScope.launch {
+                _navigate.emit(ACCOUNT_OPTIONS_FRAGMENT)
+            }
+        }else{
+            Unit
         }
+    }
+
+    fun startButtonClick(){
+        sharedPreferences.edit().putBoolean(INTRODUCTION_KEY,true).apply()
     }
 }

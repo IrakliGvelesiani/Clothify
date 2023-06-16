@@ -10,11 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.clothify.Adapters.BestProductsAdapter
 import com.example.clothify.R
-import com.example.clothify.Util.showBottomNavigationView
+import com.example.clothify.Adapters.BestProductsAdapter
 import com.example.clothify.databinding.FragmentBaseCategoryBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.clothify.Util.showBottomNavigationView
 
 open class BaseCategoryFragment: Fragment(R.layout.fragment_base_category) {
     private lateinit var binding: FragmentBaseCategoryBinding
@@ -36,14 +35,12 @@ open class BaseCategoryFragment: Fragment(R.layout.fragment_base_category) {
         setupOfferRv()
         setupBestProductsRv()
 
-
-
-        offerAdapter.onClick = {
+        bestProductsAdapter.onClick = {
             val b = Bundle().apply { putParcelable("product",it) }
             findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
         }
 
-        bestProductsAdapter.onClick = {
+        offerAdapter.onClick = {
             val b = Bundle().apply { putParcelable("product",it) }
             findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
         }
@@ -52,16 +49,17 @@ open class BaseCategoryFragment: Fragment(R.layout.fragment_base_category) {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                if(!recyclerView.canScrollVertically(1) && dx != 0){
+                if (!recyclerView.canScrollVertically(1) && dx != 0){
                     onOfferPagingRequest()
                 }
             }
         })
-        binding.nestedScrollBaseCategory.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener({
-                v,_,scrollY,_,_ -> if (v.getChildAt(0).bottom <= v.height + scrollY){
-            onBestProductsPagingRequest()
-        }
-        }))
+
+        binding.nestedScrollBaseCategory.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener{ v, _, scrollY, _, _ ->
+            if (v.getChildAt(0).bottom <= v.height + scrollY){
+                onBestProductsPagingRequest()
+            }
+        })
     }
 
     fun showOfferLoading(){
@@ -69,20 +67,15 @@ open class BaseCategoryFragment: Fragment(R.layout.fragment_base_category) {
     }
 
     fun hideOfferLoading(){
-
         binding.offerProductsProgressBar.visibility = View.GONE
-
-
     }
 
-    fun showBestProductsLoading() {
+    fun showBestProductsLoading(){
         binding.bestProductsProgressBar.visibility = View.VISIBLE
-
     }
 
-    fun hideBestProductsLoading() {
+    fun hideBestProductsLoading(){
         binding.bestProductsProgressBar.visibility = View.GONE
-
     }
 
     open fun onOfferPagingRequest(){
@@ -111,7 +104,6 @@ open class BaseCategoryFragment: Fragment(R.layout.fragment_base_category) {
 
     override fun onResume() {
         super.onResume()
-
         showBottomNavigationView()
     }
 

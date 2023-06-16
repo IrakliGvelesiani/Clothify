@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.clothify.databinding.ColorRvItemBinding
 
 class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorsViewHolder>() {
@@ -14,7 +15,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorsViewHolder>() {
     private var selectedPosition = -1
 
     inner class ColorsViewHolder(private val binding: ColorRvItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        ViewHolder(binding.root) {
         fun bind(color: Int, position: Int) {
             val imageDrawable = ColorDrawable(color)
             binding.imageColor.setImageDrawable(imageDrawable)

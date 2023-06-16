@@ -7,21 +7,19 @@ import androidx.lifecycle.lifecycleScope
 import com.example.clothify.Data.Category
 import com.example.clothify.Util.Resource
 import com.example.clothify.Viewmodel.CategoryViewModel
-import com.example.clothify.Viewmodel.Factory.BaseCategoryViewModelFactory
+import com.example.clothify.Viewmodel.Factory.BaseCategoryViewModelFactoryFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class CargosFragment: BaseCategoryFragment() {
-
     @Inject
     lateinit var firestore: FirebaseFirestore
 
     val viewModel by viewModels<CategoryViewModel> {
-        BaseCategoryViewModelFactory(firestore, Category.Cargos)
+        BaseCategoryViewModelFactoryFactory(firestore, Category.Cargos)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,14 +28,13 @@ class CargosFragment: BaseCategoryFragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.offerProducts.collectLatest {
                 when (it) {
-                    is Resource.Loading ->{
+                    is Resource.Loading -> {
                         showOfferLoading()
                     }
                     is Resource.Success -> {
                         offerAdapter.differ.submitList(it.data)
                         hideOfferLoading()
                     }
-
                     is Resource.Error -> {
                         Snackbar.make(requireView(), it.message.toString(), Snackbar.LENGTH_LONG)
                             .show()
@@ -51,15 +48,13 @@ class CargosFragment: BaseCategoryFragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.bestProducts.collectLatest {
                 when (it) {
-                    is Resource.Loading ->{
+                    is Resource.Loading -> {
                         showBestProductsLoading()
-
                     }
                     is Resource.Success -> {
                         bestProductsAdapter.differ.submitList(it.data)
                         hideBestProductsLoading()
                     }
-
                     is Resource.Error -> {
                         Snackbar.make(requireView(), it.message.toString(), Snackbar.LENGTH_LONG)
                             .show()
@@ -78,5 +73,4 @@ class CargosFragment: BaseCategoryFragment() {
     override fun onOfferPagingRequest() {
 
     }
-
 }
