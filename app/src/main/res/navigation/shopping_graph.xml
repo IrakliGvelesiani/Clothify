@@ -65,7 +65,13 @@
         android:id="@+id/addressFragment"
         android:name="com.example.clothify.Fragments.Shopping.AddressFragment"
         android:label="AddressFragment"
-        tools:layout="@layout/fragment_address"/>
+        tools:layout="@layout/fragment_address">
+        <argument
+            android:name="address"
+            app:argType="com.example.clothify.Data.Address"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/billingFragment"
         android:name="com.example.clothify.Fragments.Shopping.BillingFragment"
@@ -80,6 +86,9 @@
         <argument
             android:name="products"
             app:argType="com.example.clothify.Data.CartProduct[]" />
+        <argument
+            android:name="payment"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/userAccountFragment"
