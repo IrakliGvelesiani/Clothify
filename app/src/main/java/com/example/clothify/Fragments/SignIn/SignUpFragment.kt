@@ -9,20 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clothify.Data.User
 import com.example.clothify.R
-import com.example.clothify.Util.Resource
-import com.example.clothify.Util.SignUpValidation
-import com.example.clothify.Viewmodel.SignUpViewModel
+import com.example.clothify.Data.User
 import com.example.clothify.databinding.FragmentSignupBinding
+import com.example.clothify.Util.SignUpValidation
+import com.example.clothify.Util.Resource
+import com.example.clothify.Viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 
-private val TAG = "SignUpFragment"
+private val TAG = "RegisterFragment"
 @AndroidEntryPoint
-class SignUpFragment: Fragment() {
+class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupBinding
     private val viewModel by viewModels<SignUpViewModel>()
@@ -31,15 +31,15 @@ class SignUpFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding =  FragmentSignupBinding.inflate(inflater)
+    ): View {
+        binding = FragmentSignupBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.doyouhaveanaccount.setOnClickListener{
+        binding.doyouhaveanaccount.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
         }
 
@@ -51,20 +51,18 @@ class SignUpFragment: Fragment() {
                     edEmailSignUp.text.toString().trim()
                 )
                 val password = edPasswordSignUp.text.toString()
-                viewModel.createAccountWithEmailAndPassword(user,password)
+                viewModel.createAccountWithEmailAndPassword(user, password)
             }
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.signeup.collect{
-                when(it){
+            viewModel.register.collect {
+                when (it) {
                     is Resource.Loading -> {
                         binding.signInButton2.startAnimation()
                     }
-                    is Resource.Success ->{
-                        Log.d("test",it.message.toString())
+                    is Resource.Success -> {
                         binding.signInButton2.revertAnimation()
-
                     }
                     is Resource.Error -> {
                         Log.e(TAG,it.message.toString())
@@ -72,14 +70,12 @@ class SignUpFragment: Fragment() {
                     }
                     else -> Unit
                 }
-
-
             }
         }
+
         lifecycleScope.launchWhenStarted {
-            viewModel.validation.collect{
-                validation ->
-                if(validation.email is SignUpValidation.Failed){
+            viewModel.validation.collect { validation ->
+                if (validation.email is SignUpValidation.Failed){
                     withContext(Dispatchers.Main){
                         binding.edEmailSignUp.apply {
                             requestFocus()
@@ -87,6 +83,7 @@ class SignUpFragment: Fragment() {
                         }
                     }
                 }
+
                 if (validation.password is SignUpValidation.Failed){
                     withContext(Dispatchers.Main){
                         binding.edPasswordSignUp.apply {
@@ -94,7 +91,6 @@ class SignUpFragment: Fragment() {
                             error = validation.password.message
                         }
                     }
-
                 }
             }
         }

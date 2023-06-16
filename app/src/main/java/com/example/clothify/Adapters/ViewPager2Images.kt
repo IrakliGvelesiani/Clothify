@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.clothify.databinding.ViewpagerImageItemBinding
 
 class ViewPager2Images : RecyclerView.Adapter<ViewPager2Images.ViewPager2ImagesViewHolder>() {
 
     inner class ViewPager2ImagesViewHolder(val binding: ViewpagerImageItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        ViewHolder(binding.root) {
 
         fun bind(imagePath: String){
             Glide.with(itemView).load(imagePath).into(binding.imageProductDetails)

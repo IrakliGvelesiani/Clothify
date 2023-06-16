@@ -11,31 +11,30 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
-): ViewModel() {
+) : ViewModel() {
 
-    private val _signIn = MutableSharedFlow<Resource<FirebaseUser>>()
-    val signIn = _signIn.asSharedFlow()
+    private val _login = MutableSharedFlow<Resource<FirebaseUser>>()
+    val login = _login.asSharedFlow()
 
     private val _resetPassword = MutableSharedFlow<Resource<String>>()
     val resetPassword = _resetPassword.asSharedFlow()
 
-    fun signIn(email: String, password: String){
-        viewModelScope.launch { _signIn.emit(Resource.Loading()) }
+    fun login(email: String, password: String) {
+        viewModelScope.launch { _login.emit(Resource.Loading()) }
         firebaseAuth.signInWithEmailAndPassword(
             email, password
         ).addOnSuccessListener {
             viewModelScope.launch {
                 it.user?.let {
-                    _signIn.emit(Resource.Success(it))
+                    _login.emit(Resource.Success(it))
                 }
             }
         }.addOnFailureListener {
             viewModelScope.launch {
-                _signIn.emit(Resource.Error(it.message.toString()))
+                _login.emit(Resource.Error(it.message.toString()))
             }
         }
     }
@@ -45,17 +44,17 @@ class SignInViewModel @Inject constructor(
             _resetPassword.emit(Resource.Loading())
         }
 
-            firebaseAuth.sendPasswordResetEmail(email)
-                .addOnSuccessListener {
-                    viewModelScope.launch {
-                        _resetPassword.emit(Resource.Success(email))
-                    }
+        firebaseAuth
+            .sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    _resetPassword.emit(Resource.Success(email))
                 }
-                .addOnFailureListener {
-                    viewModelScope.launch {
-                        _resetPassword.emit(Resource.Error(it.message.toString()))
-                    }
+            }
+            .addOnFailureListener {
+                viewModelScope.launch {
+                    _resetPassword.emit(Resource.Error(it.message.toString()))
                 }
-        }
-
+            }
+    }
 }

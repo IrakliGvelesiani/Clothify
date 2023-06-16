@@ -1,6 +1,8 @@
 package com.example.clothify.Util
 
+import android.view.View
 import androidx.fragment.app.Fragment
+import com.example.clothify.R
 import com.example.clothify.Activities.ShoppingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

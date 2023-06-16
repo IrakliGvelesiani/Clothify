@@ -9,30 +9,31 @@ import com.bumptech.glide.Glide
 import com.example.clothify.Data.Product
 import com.example.clothify.databinding.SpecialRvItemBinding
 
-class SpecialProductsAdapter: RecyclerView.Adapter<SpecialProductsAdapter.SpecialProductsViewHolder> (){
+class SpecialProductsAdapter :
+    RecyclerView.Adapter<SpecialProductsAdapter.SpecialProductsViewHolder>() {
 
-    inner class SpecialProductsViewHolder(private val binding: SpecialRvItemBinding):
-        RecyclerView.ViewHolder(binding.root){
+    inner class SpecialProductsViewHolder(private val binding: SpecialRvItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(product: Product){
-                binding.apply {
-                    Glide.with(itemView).load(product.images[0]).into(imageSpecialRvItem)
-                    tvSpecialProductName.text = product.name
-                    tvSpecialProductPrice.text = product.price.toString()
-                }
-
+        fun bind(product: Product) {
+            binding.apply {
+                Glide.with(itemView).load(product.images[0]).into(imageSpecialRvItem)
+                tvSpecialProductName.text = product.name
+                tvSpecialProductPrice.text = product.price.toString()
             }
         }
+    }
 
-   private val diffCallback = object : DiffUtil.ItemCallback<Product>(){
+    private val diffCallback = object : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+            return oldItem.id == newItem.id
+        }
+
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem == newItem
         }
-
-        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-            return  oldItem.id == newItem.id
-        }
     }
+
     val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpecialProductsViewHolder {
@@ -56,5 +57,6 @@ class SpecialProductsAdapter: RecyclerView.Adapter<SpecialProductsAdapter.Specia
         return differ.currentList.size
     }
 
-    var onClick : ((Product) -> Unit)? = null
+    var onClick: ((Product) -> Unit)? = null
+
 }

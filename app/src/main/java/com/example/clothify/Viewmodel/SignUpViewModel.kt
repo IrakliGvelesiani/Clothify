@@ -2,75 +2,62 @@ package com.example.clothify.Viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.clothify.Data.User
+import com.example.clothify.Util.*
 import com.example.clothify.Util.Constants.USER_COLLECTION
-import com.example.clothify.Util.Resource
-import com.example.clothify.Util.SignUpFieldState
-import com.example.clothify.Util.SignUpValidation
-import com.example.clothify.Util.validateEmail
-import com.example.clothify.Util.validatePassword
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.runBlocking
-
 import javax.inject.Inject
 
 @HiltViewModel
-
 class SignUpViewModel @Inject constructor(
-   private val firebaseAuth: FirebaseAuth,
-   private val db : FirebaseFirestore
-): ViewModel() {
+    private val firebaseAuth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : ViewModel() {
 
-    private val _sigenup = MutableStateFlow<Resource<User>>(Resource.Unspecified())
-    val signeup: Flow<Resource<User>> = _sigenup
+    private val _register = MutableStateFlow<Resource<User>>(Resource.Unspecified())
+    val register: Flow<Resource<User>> = _register
 
-    private val _validation = Channel<SignUpFieldState> (  )
+    private val _validation = Channel<SignUpFieldState>()
     val validation = _validation.receiveAsFlow()
 
-
     fun createAccountWithEmailAndPassword(user: User, password: String) {
-        if (checkValidation(user, password)){
-
-        runBlocking {
-            _sigenup.emit(Resource.Loading())
-        }
-        firebaseAuth.createUserWithEmailAndPassword(user.email, password)
-            .addOnSuccessListener {
-                it.user?.let{
-                    saveUserInfo(it.uid,user)
-//
-                }
-            }.addOnFailureListener {
-                    _sigenup.value = Resource.Error(it.message.toString())
-            }
-            }else{
-                val signupFieldState = SignUpFieldState(
-                    validateEmail(user.email),validatePassword(password)
-                )
-
+        if (checkValidation(user, password)) {
             runBlocking {
-                _validation.send(signupFieldState)
+                _register.emit(Resource.Loading())
+            }
+            firebaseAuth.createUserWithEmailAndPassword(user.email, password)
+                .addOnSuccessListener {
+                    it.user?.let {
+                        saveUserInfo(it.uid, user)
+                    }
+                }.addOnFailureListener {
+                    _register.value = Resource.Error(it.message.toString())
+                }
+        } else {
+            val registerFieldsState = SignUpFieldState(
+                validateEmail(user.email), validatePassword(password)
+            )
+            runBlocking {
+                _validation.send(registerFieldsState)
             }
         }
     }
 
-    private fun saveUserInfo(userUID: String, user:User) {
+    private fun saveUserInfo(userUid: String, user: User) {
         db.collection(USER_COLLECTION)
-            .document(userUID)
+            .document(userUid)
             .set(user)
             .addOnSuccessListener {
-                _sigenup.value = Resource.Success(user)
+                _register.value = Resource.Success(user)
             }.addOnFailureListener {
-                _sigenup.value = Resource.Error(it.message.toString())
+                _register.value = Resource.Error(it.message.toString())
             }
-
     }
 
     private fun checkValidation(user: User, password: String): Boolean {
@@ -82,4 +69,3 @@ class SignUpViewModel @Inject constructor(
         return shouldRegister
     }
 }
-

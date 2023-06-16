@@ -1,6 +1,7 @@
 package com.example.clothify.Fragments.Shopping
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,26 +12,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.clothify.Activities.ShoppingActivity
+import com.example.clothify.R
 import com.example.clothify.Adapters.ColorsAdapter
 import com.example.clothify.Adapters.SizesAdapter
 import com.example.clothify.Adapters.ViewPager2Images
 import com.example.clothify.Data.CartProduct
-import com.example.clothify.R
+import com.example.clothify.databinding.FragmentProductDetailsBinding
 import com.example.clothify.Util.Resource
 import com.example.clothify.Util.hideBottomNavigationView
 import com.example.clothify.Viewmodel.DetailsViewModel
-import com.example.clothify.databinding.FragmentProductDetailsBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class ProductDetailsFragment: Fragment() {
+class ProductDetailsFragment : Fragment() {
     private val args by navArgs<ProductDetailsFragmentArgs>()
     private lateinit var binding: FragmentProductDetailsBinding
     private val viewPagerAdapter by lazy { ViewPager2Images() }
-    private val sizesAdapter by lazy { SizesAdapter () }
+    private val sizesAdapter by lazy { SizesAdapter() }
     private val colorsAdapter by lazy { ColorsAdapter() }
     private var selectedColor: Int? = null
     private var selectedSize: String? = null
@@ -41,7 +40,7 @@ class ProductDetailsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       hideBottomNavigationView()
+        hideBottomNavigationView()
         binding = FragmentProductDetailsBinding.inflate(inflater)
         return binding.root
     }
@@ -68,7 +67,7 @@ class ProductDetailsFragment: Fragment() {
         }
 
         binding.buttonAddToCart.setOnClickListener {
-            viewModel.addUpdateProductInCart(CartProduct(product,1,selectedColor,selectedSize))
+            viewModel.addUpdateProductInCart(CartProduct(product, 1, selectedColor, selectedSize))
         }
 
         lifecycleScope.launchWhenStarted {
@@ -97,16 +96,15 @@ class ProductDetailsFragment: Fragment() {
             tvProductPrice.text = "$ ${product.price}"
             tvProductDescription.text = product.description
 
-            if(product.colors.isNullOrEmpty())
+            if (product.colors.isNullOrEmpty())
                 tvProductColors.visibility = View.INVISIBLE
-
             if (product.sizes.isNullOrEmpty())
                 tvProductSize.visibility = View.INVISIBLE
         }
 
         viewPagerAdapter.differ.submitList(product.images)
-        product.colors?.let{colorsAdapter.differ.submitList(it)}
-        product.sizes?.let{sizesAdapter.differ.submitList(it)}
+        product.colors?.let { colorsAdapter.differ.submitList(it) }
+        product.sizes?.let { sizesAdapter.differ.submitList(it) }
     }
 
     private fun setupViewpager() {
@@ -118,14 +116,16 @@ class ProductDetailsFragment: Fragment() {
     private fun setupColorsRv() {
         binding.rvColors.apply {
             adapter = colorsAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
     private fun setupSizesRv() {
         binding.rvSizes.apply {
             adapter = sizesAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
 }

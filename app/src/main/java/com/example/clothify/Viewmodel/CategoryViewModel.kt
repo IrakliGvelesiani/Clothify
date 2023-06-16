@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 
 class CategoryViewModel constructor(
     private val firestore: FirebaseFirestore,
-    private val category : Category
-): ViewModel(){
+    private val category: Category
+) : ViewModel() {
 
     private val _offerProducts = MutableStateFlow<Resource<List<Product>>>(Resource.Unspecified())
     val offerProducts = _offerProducts.asStateFlow()
@@ -26,7 +26,7 @@ class CategoryViewModel constructor(
         fetchBestProducts()
     }
 
-    fun fetchOfferProducts(){
+    fun fetchOfferProducts() {
         viewModelScope.launch {
             _offerProducts.emit(Resource.Loading())
         }
@@ -44,7 +44,7 @@ class CategoryViewModel constructor(
             }
     }
 
-    fun fetchBestProducts(){
+    fun fetchBestProducts() {
         viewModelScope.launch {
             _bestProducts.emit(Resource.Loading())
         }
@@ -61,4 +61,5 @@ class CategoryViewModel constructor(
                 }
             }
     }
+
 }
