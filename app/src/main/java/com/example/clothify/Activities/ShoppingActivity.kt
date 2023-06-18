@@ -2,6 +2,7 @@ package com.example.clothify.Activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class ShoppingActivity : AppCompatActivity() {
 
+
+
     val binding by lazy {
         ActivityShoppingBinding.inflate(layoutInflater)
     }
@@ -27,6 +30,10 @@ class ShoppingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        window.decorView.apply {
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
 
         val navController = findNavController(R.id.shoppingHostFragment)
         binding.bottomNavigation.setupWithNavController(navController)
@@ -47,5 +54,7 @@ class ShoppingActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
 }
